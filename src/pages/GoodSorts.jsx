@@ -2,7 +2,9 @@ import React from 'react'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/hljs'
 
-import { good_sorts } from '../data'
+import { good_sorts, heap_demo } from '../data'
+import goodsorts_exp1 from "../assets/goodsorts_exp1.png"
+import goodsorts_exp2 from "../assets/goodsorts_exp2.png"
 import wip from '../assets/wip.svg'
 
 export const GoodSorts = () => {
@@ -22,7 +24,7 @@ export const GoodSorts = () => {
         {/* QUICKSORT */}
         <h2 className='text-2xl md:text-3xl mt-2'>QuickSort</h2>
         <p className='mt-2 text-slate-600 text-sm md:text-lg lg:text-xl'>
-          Quicksort works by partitioning an array into two sub-arrays, one with elements smaller than a selected element, called the pivot, and the other with elements larger than the pivot. The pivot element is then placed in its correct position in the sorted array via in-place swapping. The process is repeated recursively on the sub-arrays until the entire array is sorted. To visualize this, imagine a deck of cards being divided into smaller piles based on their numerical value, then each pile is further divided and reassembled until the deck is fully sorted.
+          Quicksort works by partitioning an array into two sub-arrays, one with elements smaller than a selected element, called the pivot (usually chosen randomly or as the first element of the list), and the other with elements larger than the pivot. The pivot element is then placed in its correct position in the sorted array via in-place swapping. The process is repeated recursively on the sub-arrays until the entire array is sorted. To visualize this, imagine a deck of cards being divided into smaller piles based on their numerical value, then each pile is further divided and reassembled until the deck is fully sorted.
         </p>
         <div className='text-xs md:text-base'>
           <SyntaxHighlighter language='python' style={tomorrow}>
@@ -42,16 +44,119 @@ export const GoodSorts = () => {
         {/* HEAPSORT */}
         <h2 className='text-2xl md:text-3xl mt-2'>HeapSort</h2>
         <p className='mt-2 text-slate-600 text-sm md:text-lg lg:text-xl'>
-          Heap
+          As the name suggests, Heapsort has to do with something called a Heap (or a Binary Heap). A Heap is a data structure which is a Binary Tree (see the Trees section!) that satisfies a specific property, known as the Binary Heap Property. The Binary Heap Property states that each parent node in the Heap is either greater than or equal to each of its children (in the case of a Max Heap), or each parent node is less than or equal to its children (in the case of a Min Heap). Let's look at how to implement a Heap (max Heap in particular):
         </p>
         <div className='text-xs md:text-base'>
           <SyntaxHighlighter language='python' style={tomorrow}>
-            {good_sorts[1]}
+            {good_sorts[2]}
           </SyntaxHighlighter>
         </div>
+        <p className='mt-2 text-slate-600 text-sm md:text-lg lg:text-xl'>
+          I'm sure you can see why some algorithms can be difficult to work with given the complexity or length of their implementations, and why 'Bad' sorting algorithms may be preferred in some instances. Regardless, if we take a look at this implementation, it's not too difficult to understand how the Heap actually works.
+        </p>
+        <ul className='px-8 md:px-12 list-disc text-slate-600 text-sm md:text-lg lg:text-xl'>
+          <li>
+            The Heap is initialized by taking a list as input, and uses the build_heap() method to create the Heap. You can visualize this process as the function going through each element of the array, placing that element at the root of the Heap, and perform swap operations to maintain the Heap property.
+          </li>
+          <li>
+            build_heap() calls on the sink() method which takes an index i and ensures that the heap property is maintained at that index. It does this by comparing the element at index i to its left and right children. If the element at index i is smaller than its left or right child, it swaps the element with the larger child, and continues the same process at the child's index, recursively.
+          </li>
+          <li>
+            The swim() method is used for insertion in insert() to maintain the Heap property. To make it easier to insert multiple values I've written insert_values() which iteratively calls insert().
+          </li>
+          <li>
+            We can consider extract_max() to be the operation we care about the most with respect to HeapSort. It essentially takes the largest element from the Heap, swims that element down to the end of the heap, and removes it from the Heap. Before looking at HeapSort itself, let's look at a demo of Heap operations.
+          </li>
+        </ul>
+        <div className='text-xs md:text-base'>
+          <SyntaxHighlighter language='python' style={tomorrow}>
+              {heap_demo[0]}
+          </SyntaxHighlighter>
+        </div>
+        <p className='mt-2 text-slate-600 text-sm md:text-lg lg:text-xl'>
+          Notice how the Heap Property is maintained! Every element from the list is present in the Heap, and all children are less than or equal to the value of their parent. Now what happens if we insert the value 10?
+        </p>
+        <div className='text-xs md:text-base'>
+          <SyntaxHighlighter language='python' style={tomorrow}>
+              {heap_demo[1]}
+          </SyntaxHighlighter>
+        </div>
+        <p className='mt-2 text-slate-600 text-sm md:text-lg lg:text-xl'>
+          Initially, 10 would have been inserted underneath the value 1 and to the right of 2, since that is the end of the heap. To maintain the Heap property 10 is brought to the top of the Heap with swim(), since it is the largest value present in the Heap. Similarly, if we call extract_max() with the Heap in this state, 10 will be returned and the Heap will go back to its initial form.
+        </p>
+        <div className='text-xs md:text-base'>
+          <SyntaxHighlighter language='python' style={tomorrow}>
+              {heap_demo[2]}
+          </SyntaxHighlighter>
+        </div>
+        <p className='mt-2 text-slate-600 text-sm md:text-lg lg:text-xl'>
+          With that out of the way, how does HeapSort work? I mentioned extract_max() being important, and that's because HeapSort is simply calling extract_max() repeatedly! We build the Heap, and for the number of elements in the Heap, call extract_max() which removes the returned element from the Heap. Since all the Heap operations are actually just in-place swaps of the list, the resulting list will be sorted.
+        </p>
+        <div className='text-xs md:text-base'>
+          <SyntaxHighlighter language='python' style={tomorrow}>
+              {good_sorts[3]}
+          </SyntaxHighlighter>
+        </div>
+        {/* EXPERIMENT SUITE 1 */}
+        <h2 className='text-2xl md:text-3xl mt-2'>Experiment Suite 1</h2>
+        <p className='mt-2 text-slate-600 text-sm md:text-lg lg:text-xl'>
+          Let's run a couple experiments to see how the base implementations of these sorting algorithms perform against each other. We'll compare the runtime performance as the size of the dataset increases, and then we'll compare the runtime performance as the dataset becomes less sorted. The below helper functions create lists that can help with these experiments:
+        </p>
+        <div className='text-xs md:text-base'>
+          <SyntaxHighlighter language='python' style={tomorrow}>
+              {good_sorts[4]}
+          </SyntaxHighlighter>
+        </div>
+        <img className='mx-auto h-3/4 w-3/4 lg:h-3/5 lg:w-3/5' src={goodsorts_exp1} alt="goodsorts experiment 1" />
+        <p className='mt-2 text-slate-600 text-sm md:text-lg lg:text-xl'>
+          In this experiment, we start at a list length of 10 and increment the size by 25 until 500 for each iteration. For each list length, 100 random graphs are generated and the average runtime for each algorithm is calculated.
+        </p>
+        <p className='mt-2 text-slate-600 text-sm md:text-lg lg:text-xl'>
+          What we learn from this experiment is that as the length of the list increases, on average HeapSort performs the worst. QuickSort & MergeSort are relatively close in terms of average runtime, but QuickSort performs the best on average.
+        </p>
+        <p className='mt-2 text-slate-600 text-sm md:text-lg lg:text-xl'>
+          Why is this the case?
+        </p>
+        <ul className='px-8 md:px-12 list-disc text-slate-600 text-sm md:text-lg lg:text-xl'>
+          <li>
+            Building the heap for HeapSort can be slow, since the heap property may need to be restored many times during the build process, resulting in an average slower performance compared to the other two.
+          </li>
+          <li>
+            QuickSort tends to be faster than MergeSort because of the pivot selection if the pivot avoids QuickSort's worst case. The merging in MergeSort step can be slower than the partitioning step in QuickSort, since merging the sub-arrays requires comparing and copying elements, whereas the partitioning step in QuickSort only requires swapping elements.
+          </li>
+        </ul>
+        <img className='mx-auto h-3/4 w-3/4 lg:h-3/5 lg:w-3/5' src={goodsorts_exp2} alt="goodsorts experiment 2" />
+        <p className='mt-2 text-slate-600 text-sm md:text-lg lg:text-xl'>
+          In this experiment, we have a constant list length of 1000, we start at 10 swaps from a sorted list and increment the # of swaps by 25 until 500 swaps for each iteration. For each # of swaps, 100 random graphs are generated and the average runtime for each algorithm is calculated.
+        </p>
+        <p className='mt-2 text-slate-600 text-sm md:text-lg lg:text-xl'>
+          What we learn from this experiment is that QuickSort definitely performs the best when the dataset is in more disorder but poorly relative to MergeSort for less disorder, and HeapSort performs worse than the other two on average.
+        </p>
+        <p className='mt-2 text-slate-600 text-sm md:text-lg lg:text-xl'>
+          Why is this the case?
+        </p>
+        <ul className='px-8 md:px-12 list-disc text-slate-600 text-sm md:text-lg lg:text-xl'>
+          <li>
+            Quicksort's worst case arises when the list is nearly sorted.
+          </li>
+          <li>
+            The other two algorithms aren't really affected by the level of disorder in the initial dataset.
+          </li>
+        </ul>
+        {/* EXPERIMENT SUITE 1 CONCLUSIONS */}
+        <h2 className='text-2xl md:text-3xl mt-2'>Experiment Suite 1 Conclusions</h2>
+        <p className='mt-2 text-slate-600 text-sm md:text-lg lg:text-xl'>
+          QuickSort performs the best out of all three in most cases, except for when the initial dataset is not disordered. Even though HeapSort tends to perform the worst and is the most lengthy to implement from scratch, its in-place nature means that it is memory efficient, so in cases where memory is a concern, HeapSort should be considered. MergeSort is a middle ground between the two, but its nature of being recursive and comparing/copying elements slows it down in comparison to QuickSort.
+        </p>
+        <p className='mt-2 text-slate-600 text-sm md:text-lg lg:text-xl'>
+          In general, these sorting algorithms may be more complex to implement and require knowledge of recursion and data structures other than an array/list, but their average and worst-case runtime complexities are faster than the 'bad' sorts (O(n log n) with the exception of QuickSorts unlikely worst-case O(n^2)). This means they are much more efficient for sorting large datasets, which you can imagine is more practical for real-life situations.
+        </p>
         <div className='w-2/3 md:w-1/2 mx-auto mt-12'>
           <img src={wip} alt="work in progress" />
           <h1 className='text-center text-2xl md:text-4xl'>Work in progress!</h1>
+        </div>
+        <div className='w-2/12 md:w-1/12 mt-2 bg-red-500 text-center text-sm rounded-md text-white'>
+          <a href="#top">To top</a>
         </div>
     </div>
   )

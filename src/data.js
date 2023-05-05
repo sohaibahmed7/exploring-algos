@@ -154,4 +154,121 @@ def merge(left, right):
                 L.append(right[j])
                 j += 1
     return L`,
+
+`# Heap implementation
+class Heap:
+    length = 0
+    data = []
+
+    def __init__(self, L):
+        self.data = L
+        self.length = len(L)
+        self.build_heap()
+
+    def build_heap(self):
+        for i in range(self.length // 2 - 1, -1, -1):
+            self.sink(i)
+
+    def sink(self, i):
+        largest_known = i
+        if self.left(i) < self.length and self.data[self.left(i)] > self.data[i]:
+            largest_known = self.left(i)
+        if self.right(i) < self.length and self.data[self.right(i)] > self.data[largest_known]:
+            largest_known = self.right(i)
+        if largest_known != i:
+            self.data[i], self.data[largest_known] = self.data[largest_known], self.data[i]
+            self.sink(largest_known)
+
+    def swim(self, i):
+        while i > 0 and self.data[i] > self.data[self.parent(i)]:
+            self.data[i], self.data[self.parent(i)] = self.data[self.parent(i)], self.data[i]
+            i = self.parent(i)
+
+    def extract_max(self):
+        self.data[0], self.data[self.length - 1] = self.data[self.length - 1], self.data[0]
+        max_value = self.data[self.length - 1]
+        self.length -= 1
+        self.sink(0)
+        return max_value
+
+    def insert(self, value):
+        if len(self.data) == self.length:
+            self.data.append(value)
+        else:
+            self.data[self.length] = value
+        self.length += 1
+        self.swim(self.length - 1)
+
+    def left(self, i):
+        return 2 * (i + 1) - 1
+
+    def right(self, i):
+        return 2 * (i + 1)
+
+    def parent(self, i):
+        return (i + 1) // 2 - 1
+
+    def __str__(self):
+        height = math.ceil(math.log(self.length + 1, 2))
+        whitespace = 2 ** height
+        s = ""
+        for i in range(height):
+            for j in range(2 ** i - 1, min(2 ** (i + 1) - 1, self.length)):
+                s += " " * whitespace
+                s += str(self.data[j]) + " "
+            s += "\\n"
+            whitespace = whitespace // 2
+        return s`,
+
+`def heapsort(L):
+    heap = Heap(L)
+    for _ in range(len(L)):
+        heap.extract_max()`,
+
+`# Create a list of random values
+def create_random_list(length, max_value):
+    return [random.randint(0, max_value) for _ in range(length)]
+
+# Swap function
+def swap(L, i, j):
+    L[i], L[j] = L[j], L[i]
+
+# Create a list of random values, sort it, then perform a random # of swaps
+def create_near_sorted_list(length, max_value, swaps):
+    L = create_random_list(length, max_value)
+    L.sort()
+    for _ in range(swaps):
+        r1 = random.randint(0, length - 1)
+        r2 = random.randint(0, length - 1)
+        swap(L, r1, r2)
+    return L`,
+]
+
+export const heap_demo = [
+`L = [2,4,1,9,8,7,3,5,0,6] # Init a list
+H = Heap(L) # Build the Heap
+print(H) # Print the Heap
+# OUTPUT
+          9
+     8         7
+  5     6     1     3
+4   0   2`,
+
+`H.insert(10) # Insert 10
+print(H) # Print the Heap
+#OUTPUT
+          10
+      9         7
+  5     8     1     3
+4   0   2   6`,
+
+`max = H.extract_max() # Extract max value from Heap
+print(max) # Print the Max value to confirm its 10
+print(H) # Print the Heap
+#OUTPUT
+The max value is: 10
+            9
+      8         7
+  5     6     1     3
+4   0   2`,
 ]

@@ -1,5 +1,4 @@
-import random
-import timeit
+import random, timeit
 import matplotlib.pyplot as plot
 
 # Swap function
