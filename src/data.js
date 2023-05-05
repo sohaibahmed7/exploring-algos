@@ -24,7 +24,7 @@ export const navigation = [
         name: 'good sorts',
         href: '/goodsorts',
         image: goodsorts,
-        desc: "Quick Sort, Merge Sort & Heap Sort. These sorting algorithms are often known as 'Good Sorts' due to their efficient nature and ability to handle and sort large datasets."
+        desc: "QuickSort, MergeSort & HeapSort. These sorting algorithms are often known as 'Good Sorts' due to their efficient nature and ability to handle and sort large datasets."
     },
     {
         name: 'trees',
@@ -40,7 +40,7 @@ export const navigation = [
     },
 ]
 
-//Implementation Code (pain)
+//Implementation Code
 export const exp_code = [
 `import random
 # Create a list of random values
@@ -57,7 +57,6 @@ def create_near_sorted_list(length, max_value, swaps):
     return L
 `,
 ]
-
 
 export const bad_sorts = [
 `# Traditional Bubble sort
@@ -101,4 +100,58 @@ def find_min_index(L, n):
 # Swap function
 def swap(L, i, j):
     L[i], L[j] = L[j], L[i]`,
+]
+
+export const good_sorts = [
+`# QuickSort
+def quicksort(L):
+    copy = quicksort_copy(L)
+    for i in range(len(L)):
+        L[i] = copy[i]
+# QuickSort helper
+def quicksort_copy(L):
+    if len(L) < 2:
+        return L
+    pivot = L[0]
+    left, right = [], []
+    for num in L[1:]:
+        if num < pivot:
+            left.append(num)
+        else:
+            right.append(num)
+    return quicksort_copy(left) + [pivot] + quicksort_copy(right)`,
+
+`# MergeSort
+def mergesort(L):
+    if len(L) <= 1:
+        return
+    mid = len(L) // 2
+    left, right = L[:mid], L[mid:]
+
+    mergesort(left)
+    mergesort(right)
+    temp = merge(left, right)
+
+    for i in range(len(temp)):
+        L[i] = temp[i]
+# MergeSort helper
+def merge(left, right):
+    L = []
+    i = j = 0
+
+    while i < len(left) or j < len(right):
+        if i >= len(left):
+            L.append(right[j])
+            j += 1
+        elif j >= len(right):
+            L.append(left[i])
+            i += 1
+        else:
+            if left[i] <= right[j]:
+                L.append(left[i])
+                i += 1
+            else:
+                L.append(right[j])
+                j += 1
+    return L`,
 ]

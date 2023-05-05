@@ -2,7 +2,6 @@ import React from 'react'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/hljs'
 
-
 import { exp_code, bad_sorts } from '../data'
 import badsorts_exp1 from "../assets/badsorts_exp1.png"
 import badsorts_exp2 from "../assets/badsorts_exp2.png"
