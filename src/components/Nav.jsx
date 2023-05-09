@@ -1,4 +1,5 @@
 import React from 'react'
+import { AiOutlineGithub } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
 import { navigation } from '../data'
 
@@ -14,6 +15,7 @@ export const Nav = () => {
           )
         })}
       </ul>
+      <a className='hidden md:inline-flex text-4xl my-auto pr-4 hover:text-black duration-150' target='_blank' href="https://github.com/sohaibahmed7/exploring-algos"><AiOutlineGithub /></a>
     </nav>
   )
 }
