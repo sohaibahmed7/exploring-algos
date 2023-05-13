@@ -7,7 +7,7 @@ export const Home = () => {
   return (
     <>
     <section className='block md:flex pt-8 md:pt-4 px-6 md:px-12 lg:px-20 items-center'>
-      <div className='container'>
+      <div className='mt-12 md:mt-0 container'>
           <h1 className='text-center md:text-left text-3xl md:text-4xl lg:text-7xl'>Exploring Algorithms</h1>
           <p className='text-center md:text-left pt-4 lg:text-lg'>
             The universe of algorithms is fascinating! We see algorithms not only in computer science but also all over other fields. This site features and in-depth exploration of various algorithms, and we discuss their purpose, base implementation, and applications. In addition, we'll compare similar algorithms and showcase the results of experiments that allow for a better understanding of the strengths and weaknesses that each algorithm has. By comparing and contrasting various algorithms, we'll gain a better appreciation for these fundamental concepts of computer science.
